@@ -168,9 +168,9 @@ function sendMail() {
     return;
   }
 
-  // EmailJS service ID and template ID
-  const serviceID = "service_e9ef6xg";
-  const templateID = "template_jftmbat";
+  // EmailJS service ID and template ID (from config.js)
+  const serviceID = EMAILJS_CONFIG.serviceID;
+  const templateID = EMAILJS_CONFIG.templateID;
 
   // Prepare parameters matching EmailJS template variables
   // Make sure these variable names match your EmailJS template exactly
