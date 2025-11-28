@@ -168,21 +168,36 @@ function sendMail() {
     return;
   }
 
-  // Replace these with your EmailJS service ID and template ID
-  const serviceID = "REPLACE_WITH_EMAILJS_SERVICE_ID";
-  const templateID = "REPLACE_WITH_EMAILJS_TEMPLATE_ID";
+  // EmailJS service ID and template ID
+  const serviceID = "service_e9ef6xg";
+  const templateID = "template_jftmbat";
 
   // Prepare parameters matching EmailJS template variables
+  // Make sure these variable names match your EmailJS template exactly
   const params = {
+    to_email: "Mazenyasser479@gmail.com", // Your email address (recipient)
     from_name: name,
     reply_to: email,
     message: message
   };
 
+  console.log("Sending email with params:", params);
+  console.log("Service ID:", serviceID);
+  console.log("Template ID:", templateID);
+
+  // Check if emailjs is loaded
+  if (typeof emailjs === 'undefined') {
+    console.error("EmailJS is not loaded!");
+    alert("Email service is not available. Please refresh the page and try again.");
+    return;
+  }
+
   // Send email
   emailjs.send(serviceID, templateID, params)
     .then((res) => {
-      console.log("Email sent:", res.status, res.text);
+      console.log("Email sent successfully:", res);
+      console.log("Status:", res.status);
+      console.log("Text:", res.text);
       alert("Message sent! Thank you.");
       // Reset form
       document.getElementById("name").value = "";
@@ -190,7 +205,20 @@ function sendMail() {
       document.getElementById("message").value = "";
     })
     .catch((err) => {
-      console.error("Email failed:", err);
-      alert("Sorry, something went wrong. Please try again later.");
+      console.error("Email failed with error:", err);
+      console.error("Error status:", err.status);
+      console.error("Error text:", err.text);
+      console.error("Full error:", JSON.stringify(err, null, 2));
+      
+      // More specific error messages
+      let errorMessage = "Sorry, something went wrong. ";
+      if (err.text) {
+        errorMessage += "Error: " + err.text;
+      } else if (err.status) {
+        errorMessage += "Status: " + err.status;
+      } else {
+        errorMessage += "Please check the console for details.";
+      }
+      alert(errorMessage);
     });
 }
